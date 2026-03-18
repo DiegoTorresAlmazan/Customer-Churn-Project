@@ -1,0 +1,56 @@
+import sys
+print(sys.executable)
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_theme(style="whitegrid")
+
+# Load the dataset
+df = pd.read_csv('../data/raw/Telco-Customer-Churn.csv')
+df.head()
+
+df.info()
+
+df['TotalCharges'] = pd.to_numeric(df['TotalCharges'], errors='coerce')
+df.drop(columns=['customerID'], inplace=True)
+median_total_charges = df['TotalCharges'].median()
+df['TotalCharges'].fillna(median_total_charges, inplace=True)
+df.isnull().sum()
+
+df['Churn'] = df['Churn'].apply(lambda x: 1 if x == 'Yes' else 0)
+numerical_features = ['tenure', 'MonthlyCharges', 'TotalCharges']
+categorical_features = ['Contract', 'InternetService', 'PaymentMethod']
+
+fig, axes = plt.subplots(2, 3, figsize=(20, 12))
+sns.countplot(x='Churn', data=df, ax=axes[0,0]).set_title('Churn Distribution')
+for i, feature in enumerate(numerical_features, 1):
+    sns.histplot(data=df, x=feature, hue='Churn', multiple='stack', ax=axes[0,i], kde=True).set_title(f'{feature} by Churn')
+for i, feature in enumerate(categorical_features):
+    sns.countplot(data=df, x=feature, hue='Churn', ax=axes[1,i]).set_title(f'{feature} vs. Churn')
+    axes[1,i].tick_params(axis='x', rotation=45)
+plt.tight_layout()
+plt.show()
+
+df_processed = df.copy()
+categorical_cols = df_processed.select_dtypes(include=['object', 'category']).columns
+df_processed = pd.get_dummies(df_processed, columns=categorical_cols, drop_first=True)
+
+labels = ['0-1yr', '1-2yr', '2-3yr', '3-4yr', '4-5yr', '5+yr']
+df_processed['tenure_bins'] = pd.cut(df_processed['tenure'], bins=[0, 12, 24, 36, 48, 60, 72], labels=labels, right=False)
+df_processed = pd.get_dummies(df_processed, columns=['tenure_bins'], drop_first=True)
+
+df_processed.head()
+
+plt.figure(figsize=(10, 12))
+corr_matrix = df_processed.corr()
+churn_corr = corr_matrix[['Churn']].sort_values(by='Churn', ascending=False)
+sns.heatmap(churn_corr, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Feature Correlation with Churn')
+plt.show()
+
+output_path = '../data/processed/churn_processed_data.csv'
+df_processed.to_csv(output_path, index=False)
+print(f'Processed data saved to {output_path}')

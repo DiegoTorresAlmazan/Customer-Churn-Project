@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data files
+# If your data is large, you might want to ignore it
+# data/raw/
+# data/processed/
+
+# Model files
+# You may or may not want to commit large model files
+# models/*.joblib
+
+# OS-specific
+.DS_Store
+Thumbs.db

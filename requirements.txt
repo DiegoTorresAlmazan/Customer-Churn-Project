@@ -1,0 +1,18 @@
+# Core Data Science & ML
+pandas
+scikit-learn
+imbalanced-learn
+xgboost
+joblib
+shap
+
+# API & Serving
+fastapi
+uvicorn[standard]
+
+# Dashboard
+streamlit
+
+# Notebooks & Plotting
+notebook
+matplotlib
