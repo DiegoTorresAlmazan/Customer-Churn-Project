@@ -29,7 +29,7 @@ Follow these steps to run the entire pipeline from your local machine.
 
 ```bash
 git clone https://github.com/DiegoTorresAlmazan/Customer-Churn-Project
-cd <repository-name>
+cd Customer-Churn-Project
 ```
 
 ### Step 2: Install Dependencies
