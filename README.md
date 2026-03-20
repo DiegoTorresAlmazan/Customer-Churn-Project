@@ -28,7 +28,7 @@ Follow these steps to run the entire pipeline from your local machine.
 ### Step 1: Clone the Repository
 
 ```bash
-git clone <your-repository-url>
+git clone https://github.com/DiegoTorresAlmazan/Customer-Churn-Project
 cd <repository-name>
 ```
 
